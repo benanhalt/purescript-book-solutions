@@ -19,8 +19,18 @@ data Shape
   | Rectangle Point Number Number
   | Line Point Point
   | Text Point String
+  | Clipped Picture Point Number Number
 
 showShape :: Shape -> String
+showShape (Clipped p c w h) =
+  "Clipped [picture: "
+  <> ", center: "
+  <> showPoint c
+  <> ", width: "
+  <> show w
+  <> ", height: "
+  <> show h
+  <> "]"
 showShape (Circle c r) =
   "Circle [center: " <> showPoint c <> ", radius: " <> show r <> "]"
 showShape (Rectangle c w h) =
@@ -48,6 +58,7 @@ origin = { x, y }
 -- origin = { x: 0.0, y: 0.0 }
 
 getCenter :: Shape -> Point
+getCenter (Clipped s c w h) = c
 getCenter (Circle c r) = c
 getCenter (Rectangle c w h) = c
 getCenter (Line s e) = (s + e) * {x: 0.5, y: 0.5}
@@ -74,6 +85,9 @@ showBounds b =
   "]"
 
 shapeBounds :: Shape -> Bounds
+shapeBounds (Clipped p c w h) =
+  (shapeBounds $ Rectangle c w h) `intersect`
+  (foldl union emptyBounds (shapeBounds <$> p))
 shapeBounds (Circle { x, y } r) =
   { top:    y - r
   , left:   x - r
