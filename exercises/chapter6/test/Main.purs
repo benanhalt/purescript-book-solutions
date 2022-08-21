@@ -17,7 +17,6 @@ main :: Effect Unit
 main =
   runTest do
     runChapterExamples
-    {-  Move this block comment starting point to enable more tests
     suite "Show Me!" do
       test "Show Point" do
         Assert.equal "(1.0, 2.0)"
@@ -142,6 +141,7 @@ main =
           Assert.equal "123"
             $ foldMap (\x -> show x)
             $ OneMore 1 (2 : 3 : Nil)
+    {-  skipping these
       let
         withDups =
           [ Circle (Point {x: 1.0, y: 2.0}) 3.0
@@ -160,6 +160,7 @@ main =
       test "dedupShapesFast" do
         Assert.equal noDups
           $ dedupShapesFast withDups
+-}
     suite "Multi Parameter Type Classes " do
       test "unsafeMaximum" do
         Assert.equal 42
@@ -261,7 +262,6 @@ main =
             $ hash
             $ Hour 14
 
--}
 runChapterExamples :: TestSuite
 runChapterExamples =
   test "Todo for book maintainers - Add tests for chapter examples" do
